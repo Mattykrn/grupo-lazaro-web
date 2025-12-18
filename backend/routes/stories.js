@@ -12,9 +12,11 @@ function checkAdmin(req, res, next) {
 
 // POST /api/stories -> crear historia (pendiente por defecto)
 router.post('/', (req, res) => {
-  const { nombre, email, añoDiagnostico, tipoEM, historia } = req.body;
+  const { nombre, email, tipoEM, historia } = req.body;
+  // Aceptar tanto "añoDiagnostico" (frontend actual) como "anoDiagnostico"
+  const anoDiagnostico = req.body.añoDiagnostico || req.body.anoDiagnostico || '';
   const stmt = db.prepare(`INSERT INTO stories (nombre,email,anoDiagnostico,tipoEM,historia,approved,createdAt) VALUES (?,?,?,?,?,0,?)`);
-  const info = stmt.run(nombre || 'Anónimo', email || '', añoDiagnostico || '', tipoEM || '', historia || '', new Date().toISOString());
+  const info = stmt.run(nombre || 'Anónimo', email || '', anoDiagnostico || '', tipoEM || '', historia || '', new Date().toISOString());
   const story = db.prepare('SELECT * FROM stories WHERE id = ?').get(info.lastInsertRowid);
   res.status(201).json(story);
 });

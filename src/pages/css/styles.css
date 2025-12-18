@@ -114,3 +114,106 @@ body {
   padding: 40px;
   margin-top: 60px;
 }
+
+.footer p {
+  margin-bottom: 10px;
+}
+.footer a {
+  color: #dbeafe;
+  text-decoration: none;
+}
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Ajuste para header fijo */
+body {
+  padding-top: 80px; /* Ajustar según la altura del header */
+} 
+
+/* Estilos adicionales */
+.section {
+  padding: 60px 20px;
+}
+.section h2 {
+  text-align: center;
+  margin-bottom: 40px;
+} 
+.section p {
+  max-width: 800px;
+  margin: 0 auto 20px auto;
+  color: #666;
+}
+.section .btn {
+  display: block;
+  width: max-content;
+  margin: 20px auto 0 auto;
+}
+.section .btn:hover {
+  background: #059669;
+}
+.section .card:hover,
+.section .card-historia:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+  transition: all 0.3s ease;
+} 
+.section .card,
+.section .card-historia {
+  transition: all 0.3s ease;
+} 
+.section .card img,
+.section .card-historia img {
+  transition: transform 0.3s ease;
+}
+.section .card img:hover,
+.section .card-historia img:hover {
+  transform: scale(1.05);
+}
+
+.btn-donation {
+  position: fixed;
+  bottom: 20px;   /* Abajo */
+  right: 20px;    /* Derecha */
+  z-index: 1000;  /* Siempre arriba */
+  background: #10b981; /* verde */
+  color: white;
+  padding: 15px 25px;
+  border-radius: 50px;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  transition: transform 0.3s; /* Clase 6 */
+}
+
+.btn-donation:hover {
+  transform: scale(1.1); /* Agranda al hover */
+}
+
+/* En móvil, movelo para no tapar */
+@media (max-width: 768px) {
+  .btn-donation {
+    bottom: 10px;
+    right: 10px;
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+}
+
+.grid-noticias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
+}
+.card-noticia {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  flex: 1 1 300px;
+  max-width: 400px;
+}
+.card-noticia h3 { color: var(--violeta); }
+
+
+

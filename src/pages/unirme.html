@@ -15,6 +15,7 @@
         <nav>
           <ul class="menu flex">
             <li><a href="index.html">Home</a></li>
+            <li><a href="noticias.html">Noticias</a></li>
             <li><a href="unirme.html">Unirme</a></li>
             <li><a href="historias.html">Historias</a></li>
             <li><a href="nosotros.html">Nosotros</a></li>
@@ -25,20 +26,46 @@
 
     <main class="container">
       <h1>Compartí tu historia</h1>
-      <form>
-        <label for="nombre">Nombre:</label>
-        <input type="text" id="nombre" name="nombre" required />
+      <p class="text-center mb-8">Todo es anónimo y seguro. Tu experiencia puede dar esperanza a alguien que recién empieza el camino ❤️</p>
 
-        <label for="edad">Edad:</label>
-        <input type="number" id="edad" name="edad" />
+      <form id="form-unirme">
+        <div class="form-group">
+          <label for="nombre">¿Cómo querés que te llamemos? (opcional)</label>
+          <input type="text" id="nombre" name="nombre" placeholder="Matías, Ana..." />
+        </div>
 
-        <label for="historia">Tu historia anónima:</label>
-        <textarea id="historia" name="historia" rows="6"></textarea>
+        <div class="form-group">
+          <label for="email">Email (opcional, para contacto futuro)</label>
+          <input type="email" id="email" name="email" placeholder="tu@email.com" />
+        </div>
 
-        <label>
-          <input type="checkbox" name="aprobar" />
-          Quiero que mi historia aparezca en el muro (anónima)
-        </label>
+        <div class="form-group">
+          <label for="añoDiagnostico">Año de diagnóstico</label>
+          <input type="text" id="añoDiagnostico" name="añoDiagnostico" placeholder="2020" required />
+        </div>
+
+        <div class="form-group">
+          <label for="tipoEM">Tipo de Esclerosis Múltiple</label>
+          <select id="tipoEM" name="tipoEM" required>
+            <option value="">Seleccioná...</option>
+            <option>Remitente-recurrente (RR)</option>
+            <option>Secundaria progresiva (SP)</option>
+            <option>Primaria progresiva (PP)</option>
+            <option>Aún no lo sé</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="historia">Tu historia anónima (todo lo que quieras contar)</label>
+          <textarea id="historia" name="historia" rows="8" placeholder="Contanos cómo vivís con la EM, qué te da esperanza..."></textarea>
+        </div>
+
+        <div class="form-group checkbox">
+          <label>
+            <input type="checkbox" name="aprobar" />
+            Sí, quiero que mi historia aparezca anónimamente en el muro de esperanza
+          </label>
+        </div>
 
         <button type="submit" class="btn">Enviar con amor ❤️</button>
       </form>
@@ -50,6 +77,41 @@
         <p>Contactanos: matii.toorres.06@gmail.com</p>
       </div>
     </footer>
+
+    <!-- Script para enviar al backend SQLite -->
+    <script>
+      const form = document.getElementById('form-unirme');
+
+      form.addEventListener('submit', async function handleSubmit(event) {
+        event.preventDefault(); // Evita recarga de página
+
+        // Recoge todos los datos del form
+        const data = {
+          nombre: form.nombre.value.trim() || 'Anónimo',
+          email: form.email.value.trim() || '',
+          añoDiagnostico: form.añoDiagnostico.value,
+          tipoEM: form.tipoEM.value,
+          historia: form.historia.value.trim() || 'Una persona más se unió a Lázaro ❤️'
+        };
+
+        try {
+          // ENVÍA AL BACKEND (cambia la URL cuando tengas tu Render)
+          const res = await fetch('https://lazaro-backend-sqlite.onrender.com/api/stories', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (res.ok) {
+            alert("¡Tu historia se envió con amor! ❤️ Gracias por confiar en nosotros. La revisaremos pronto.");
+            form.reset(); // Limpia el formulario
+          } else {
+            alert("Hubo un error al enviar. Intentá de nuevo más tarde.");
+          }
+        } catch (err) {
+          alert("Error de conexión. Tu historia es importante, intentá más tarde ❤️");
+        }
+      });
+    </script>
   </body>
-  
 </html>

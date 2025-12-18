@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin – Grupo Lázaro</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <main class="container">
+    <h1>Panel Admin – Grupo Lázaro</h1>
+
+    <div id="login">
+      <input type="password" id="password" placeholder="Contraseña">
+      <button onclick="login()">Entrar</button>
+    </div>
+
+    <div id="panel" style="display:none;">
+      <button onclick="logout()">Salir</button>
+      <h2>Historias pendientes</h2>
+      <div id="stories-list"></div>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "https://lazaro-backend-sqlite.onrender.com/api"; // Cambiá por tu URL Render
+    const ADMIN_PASS = "lazaro2025arg"; // Cambiala por una fuerte
+
+    function login() {
+      if (document.getElementById('password').value === ADMIN_PASS) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('panel').style.display = 'block';
+        loadStories();
+      } else {
+        alert("Contraseña incorrecta ❤️");
+      }
+    }
+
+    function logout() {
+      document.getElementById('login').style.display = 'block';
+      document.getElementById('panel').style.display = 'none';
+      document.getElementById('password').value = '';
+    }
+
+    async function loadStories() {
+      const res = await fetch(`${API_URL}/stories/all`);
+      const stories = await res.json();
+      const list = document.getElementById('stories-list');
+      list.innerHTML = '';
+
+      stories.forEach(story => {
+        const div = document.createElement('div');
+        div.className = 'card-noticia';
+        div.innerHTML = `
+          <p><strong>${story.nombre || 'Anónimo'}</strong> - ${story.createdAt.slice(0,10)}</p>
+          <p><strong>Historia:</strong> ${story.historia}</p>
+          <p><strong>Estado:</strong> ${story.approved ? 'Aprobada' : 'Pendiente'}</p>
+          ${!story.approved ? `
+            <button onclick="approve(${story.id})">Aprobar</button>
+            <button onclick="reject(${story.id})" style="background:red;">Rechazar</button>
+          ` : ''}
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    async function approve(id) {
+      await fetch(`${API_URL}/stories/${id}/approve`, { method: 'PATCH' });
+      loadStories();
+    }
+
+    async function reject(id) {
+      if (confirm("¿Borrar esta historia?")) {
+        await fetch(`${API_URL}/stories/${id}`, { method: 'DELETE' });
+        loadStories();
+      }
+    }
+  </script>
+</body>
+</html>
